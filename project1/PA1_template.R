@@ -1,12 +1,11 @@
 ## ----loaddata------------------------------------------------------------
-unzip(zipfile="activity.zip")
 data <- read.csv("activity.csv")
 
 
 ## ------------------------------------------------------------------------
 library(ggplot2)
 total.steps <- tapply(data$steps, data$date, FUN=sum, na.rm=TRUE)
-qplot(total.steps, binwidth=1000, xlab="total number of steps taken each day")
+qplot(total.steps, binwidth=1000, xlab="total steps by day",fill=I("red")
 mean(total.steps, na.rm=TRUE)
 median(total.steps, na.rm=TRUE)
 
@@ -18,7 +17,7 @@ averages <- aggregate(x=list(steps=data$steps), by=list(interval=data$interval),
 ggplot(data=averages, aes(x=interval, y=steps)) +
     geom_line() +
     xlab("5-minute interval") +
-    ylab("average number of steps taken")
+    ylab("average steps")
 
 
 ## ------------------------------------------------------------------------
@@ -47,7 +46,7 @@ filled.data$steps <- mapply(fill.value, filled.data$steps, filled.data$interval)
 
 ## ------------------------------------------------------------------------
 total.steps <- tapply(filled.data$steps, filled.data$date, FUN=sum)
-qplot(total.steps, binwidth=1000, xlab="total number of steps taken each day")
+qplot(total.steps, binwidth=1000, xlab="total steps by day",fill=I("purple"))
 mean(total.steps)
 median(total.steps)
 
@@ -69,4 +68,4 @@ filled.data$day <- sapply(filled.data$date, FUN=weekday.or.weekend)
 ## ------------------------------------------------------------------------
 averages <- aggregate(steps ~ interval + day, data=filled.data, mean)
 ggplot(averages, aes(interval, steps)) + geom_line() + facet_grid(day ~ .) +
-    xlab("5-minute interval") + ylab("Number of steps")
+    xlab("5 minutes interval") + ylab("Steps")
